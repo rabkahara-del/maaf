@@ -105,10 +105,42 @@ textarea{
 
 <div class="container fade" id="content"></div>
 
+<!-- =======================
+     EMAILJS SCRIPT
+======================= -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+  emailjs.init("XHia2CkgRsrbmZhkn"); // PUBLIC KEY
+})();
+
+function kirimPesan() {
+  const pesan = document.getElementById("pesanInput").value;
+  const hasil = document.getElementById("hasilPesan");
+
+  if(pesan.trim() === ""){
+    hasil.innerHTML = "kalau ada pesan disini ya";
+    return;
+  }
+
+  emailjs.send("service_88xkoyw","template_i8nr33c",{
+    message: pesan
+  })
+  .then(function() {
+    hasil.innerHTML = "pesan berhasil dikirim 💌";
+    document.getElementById("pesanInput").value="";
+  }, function(error) {
+    hasil.innerHTML = "gagal mengirim 😢";
+    console.error(error);
+  });
+}
+</script>
+
 <script>
 const content = document.getElementById("content");
 const bgm = document.getElementById("bgm");
 
+// Render halaman
 function render(page){
 
   if(page === "home"){
@@ -121,7 +153,7 @@ function render(page){
   }
 
   if(page === "step1"){
-    bgm.volume = 0.15;
+    bgm.volume = 0.4;
     bgm.play().catch(()=>{});
 
     content.innerHTML = `
@@ -155,7 +187,7 @@ function render(page){
     <p class="signature">I loved you, maybe in another life.</p>
     <button class="btn" onclick="history.back()">kembali</button>
      
-   <h1>Tulis Pesan Untukku 💌</h1>
+  <h3>Tulis Pesan Untukku 💌</h3>
     <textarea id="pesanInput" placeholder="Tulis sesuatu di sini..." rows="4"></textarea>
     <button class="btn" onclick="kirimPesan()">Kirim</button>
     <p id="hasilPesan" style="margin-top:15px; font-style:italic;"></p>
@@ -166,7 +198,7 @@ function render(page){
   }
 }
 
-
+// Navigasi
 function goStepOne(){
   history.pushState({page:"step1"}, "", "#step1");
   render("step1");
@@ -187,36 +219,6 @@ window.onpopstate = function(e){
 
 history.replaceState({page:"home"}, "", "#home");
 render("home");
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
-<script>
-(function(){
-  emailjs.init("XHia2CkgRsrbmZhkn"); // PUBLIC KEY
-})();
-
-function kirimPesan() {
-  const pesan = document.getElementById("pesanInput").value;
-  const hasil = document.getElementById("hasilPesan");
-
-  if(pesan.trim() === ""){
-    hasil.innerHTML = "Jangan dikosongin dong 😅";
-    return;
-  }
-
-  emailjs.send("service_88xkoyw","template_i8nr33c",{
-    message: pesan
-  })
-  .then(function() {
-    hasil.innerHTML = "Pesan berhasil dikirim 💌";
-    document.getElementById("pesanInput").value="";
-  }, function(error) {
-    hasil.innerHTML = "Gagal mengirim 😢";
-    console.error(error);
-  });
-}
-</script>
-
-</script>
 </script>
 
 </body>
