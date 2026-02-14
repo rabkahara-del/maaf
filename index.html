@@ -4,44 +4,119 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Untuk Kamu Vici</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(#0b0b0b,#151515);color:#e6e6e6;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden;}
-body::before{content:"";position:fixed;inset:0;background-image: linear-gradient(transparent 95%, rgba(255,255,255,.12) 96%);background-size:2px 14px;opacity:.12;pointer-events:none;animation:rain .9s linear infinite;}
-@keyframes rain{from{background-position-y:0} to{background-position-y:14px;}}
-.container{position:relative;z-index:2;width:90%;max-width:700px;background:rgba(20,20,20,0.75);border-radius:18px;padding:20px;box-shadow:0 0 30px rgba(0,0,0,.6);max-height:80vh;overflow-y:auto;}
-.container::-webkit-scrollbar{width:6px;}
-.container::-webkit-scrollbar-thumb{background:rgba(255,255,255,.35);border-radius:10px;}
-h1{text-align:center;font-weight:500;margin-bottom:20px;font-size:26px;}
-p{line-height:1.75;font-size:15px;margin-bottom:16px;opacity:.95;}
-.btn{display:block;margin:20px auto 0;padding:12px 26px;background:none;border:1px solid #888;color:#eee;border-radius:30px;font-size:14px;cursor:pointer;transition:all .3s ease;}
-.btn:hover{background:#e6e6e6;color:#111;}
-.signature{margin-top:30px;font-style:italic;opacity:.8;text-align:right;}
-.fade{animation:fadeIn 1.2s ease forwards;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:linear-gradient(#0b0b0b,#151515);
+  color:#e6e6e6;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  overflow:hidden;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image: linear-gradient(transparent 95%, rgba(255,255,255,.12) 96%);
+  background-size:2px 14px;
+  opacity:.12;
+  pointer-events:none;
+  animation:rain .9s linear infinite;
+}
+@keyframes rain{
+  from{background-position-y:0}
+  to{background-position-y:14px;}
+}
+.container{
+  position:relative;
+  z-index:2;
+  width:90%;
+  max-width:700px;
+  background:rgba(20,20,20,0.75);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 0 30px rgba(0,0,0,.6);
+  max-height:80vh;
+  overflow-y:auto;
+}
+h1{
+  text-align:center;
+  font-weight:500;
+  margin-bottom:20px;
+  font-size:26px;
+}
+p{
+  line-height:1.75;
+  font-size:15px;
+  margin-bottom:16px;
+  opacity:.95;
+}
+.btn{
+  display:block;
+  margin:20px auto 0;
+  padding:12px 26px;
+  background:none;
+  border:1px solid #888;
+  color:#eee;
+  border-radius:30px;
+  font-size:14px;
+  cursor:pointer;
+  transition:.3s;
+}
+.btn:hover{
+  background:#e6e6e6;
+  color:#111;
+}
+.signature{
+  margin-top:30px;
+  font-style:italic;
+  opacity:.8;
+  text-align:right;
+}
+.fade{
+  animation:fadeIn 1.2s ease forwards;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
 </style>
 </head>
+
 <body>
+
 <audio id="bgm" loop>
   <source src="lagu.mp3" type="audio/mpeg">
 </audio>
 
-<div class="container fade" id="content">
+<div class="container fade" id="content"></div>
+
+<script>
+const content = document.getElementById("content");
+const bgm = document.getElementById("bgm");
+
+function render(page){
+
+  if(page === "home"){
+    content.innerHTML = `
   <h1>hai.</h1>
   <p>kalau kamu baca ini, semoga kamu baik-baik saja ya.. aku buat ini untuk sekedar minta maaf ke kamu!</p>
   <p>dibaca pelan pelan ya</p>
-  <button class="btn" onclick="stepOne()">klik disini</button>
-</div>
+  <button class="btn" onclick="goStepOne()">klik disini</button>
+    `;
+  }
 
-<script>
-const bgm=document.getElementById("bgm");
+  if(page === "step1"){
+    bgm.volume = 0.4;
+    bgm.play().catch(()=>{});
 
-function stepOne(){
-    bgm.volume=0.4;
-    bgm.play().catch(e=>console.log("Klik tombol dulu biar audio jalan"));
-
-    document.getElementById("content").innerHTML=`
+    content.innerHTML = `
     <h1>aku minta maaf.</h1>
     <p>halo gimana kabarnya vici, maaf tiba-tiba aku datang lagi.. maaf jika aku mengganggu, sebelum kamu berfikir untuk tidak membaca ini plis tolong aku gada maksud apa-apa, tujuanku membuat pesan ini aku ingin bener-bener minta maaf secara tulus ke kamu. karena di contact terakhir kita aku belum sempet minta maaf kepadamu</p>
     <p>mungkin sebelum baca pesan ini kamu mesti menerima email dr aku, maaf jika tidak sopan dan secara sembarangan mengirim email pribadi kepadamu, karena aku bener-bener ga punya akses lain selain ke email kamu. after you block me on all sosmed, aku hanya kepikiran aku pernah email kamu waktu itu dan akhirnya aku tergerak untuk menulis pesan ini, karena rasa bersalah yg selalu menghantuiku setiap malam.</p>  
@@ -55,15 +130,13 @@ function stepOne(){
     <p>aku sempat merasa kurang cocok dengan sifatmu yang sangat ekspresif dan kadang sulit dibujuk saat marah. itu jujur perasaanku waktu itu. tapi sekarang aku mengerti, hal-hal yang dulu aku anggap “terlalu” justru bagian dari warna yang membuat hubungan kita hidup.</p>
     <p>vici.. mungkin kamu adalah pengalaman pertamaku yg memiliki ruang ter-sendiri di hatiku yg paling dalam, kamu ABADI seperti lagu "abadi" juga.. bahwa lagu abadi bukan lagu galau, tapi itu lagu tentang mengikhlaskan, mengikhlaskan masalalu yg akan selalu abadi, karena masalalu adalah pelajaran yg bikin kita seperti saat ini, detik ini, dan masa depan yg membuat kita selalu belajar</p>
     <p>aku tidak menyesal mengenalmu, mencintaimu, bahagia dan sedih bersamamu, bahkan aku tidak bisa membencimu. dan terimakasi apabila kamu juga sebaliknya begitu kepadaku. butuh waktu yg sangat-sangat lama untuk aku sekedar lupa kepadamu, krn disetiap malam aku selalu kepiran kamu atas kesalahanku, semoga dengan tulisan ini kamu bisa memaafkanku ya dan kita masing-masing bisa melanjutkan hidup dengan tenang</p>
-    <button class="btn" onclick="stepTwo()">lanjut</button>
-    <button onclick="history.back()" style="padding:10px 20px; margin-top:10px; cursor:pointer;">
-  Kembali
-</button>
+    <button class="btn" onclick="goStepTwo()">lanjut</button>
+    <button class="btn" onclick="history.back()">kembali</button>
     `;
-}
+  }
 
-function stepTwo(){
-    document.getElementById("content").innerHTML=`
+  if(page === "step2"){
+    content.innerHTML = `
     <h1>last message.</h1>
     <p>jujur last chat dr kamu bener-bener membuat aku sadar akan salahku sefatal dan sehancur itu, aku akan instrospeksi diriku ini, doakan aku agar bisa jadi lebih baik suatu hari nanti, aku tidak menulis ini untuk meminta kesempatan kedua. aku hanya tidak ingin pergi dari hidupmu tanpa benar-benar meminta maaf dengan sepenuh hati. mungkin ini waktu yg tepat, aku gatau kamu sering buka email atau tidak, mungkin jika tidak pesan ini akan hilang begitu saja tanpa aku benar-benar bisa meminta maaf kepadamu tapi harapanku kamu pasti akan membuka email ini. </p>
     <p>kalau pada akhirnya kamu memilih menjauh dan menutup semua akses, aku menghormati itu. mungkin itu memang cara terbaik untukmu menyembuhkan diri dan tumbuh menjadi orang yg baru lagi.</p>
@@ -72,17 +145,32 @@ function stepTwo(){
     <p>terima kasih sudah pernah hadir dalam hidupku. terima kasih sudah pernah percaya dan tulus. dan sekali lagi, maaf atas semua luka yang aku sebabkan, baik yang disengaja maupun tidak. semoga kamu selalu baik-baik saja ya, and i hope youre being happiness all of time.</p>
     <p>-akbar arah k'riedho</P>
     <p class="signature">I loved you, maybe in another life.</p>
-    <button onclick="history.back()" style="padding:10px 20px; margin-top:10px; cursor:pointer;">
-  Kembali
-</button>
+    <button class="btn" onclick="history.back()">kembali</button>
     `;
+  }
 }
+
+function goStepOne(){
+  history.pushState({page:"step1"}, "", "#step1");
+  render("step1");
+}
+
+function goStepTwo(){
+  history.pushState({page:"step2"}, "", "#step2");
+  render("step2");
+}
+
+window.onpopstate = function(e){
+  if(e.state){
+    render(e.state.page);
+  } else {
+    render("home");
+  }
+};
+
+history.replaceState({page:"home"}, "", "#home");
+render("home");
 </script>
+
 </body>
 </html>
-<!-- tes -->
-
-
-
-
-
