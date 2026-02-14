@@ -119,7 +119,7 @@ function kirimPesan() {
   const hasil = document.getElementById("hasilPesan");
 
   if(pesan.trim() === ""){
-    hasil.innerHTML = "kalau ada pesan disini ya";
+    hasil.innerHTML = "Jangan dikosongin dong 😅";
     return;
   }
 
@@ -127,10 +127,10 @@ function kirimPesan() {
     message: pesan
   })
   .then(function() {
-    hasil.innerHTML = "pesan berhasil dikirim 💌";
+    hasil.innerHTML = "Pesan berhasil dikirim 💌";
     document.getElementById("pesanInput").value="";
   }, function(error) {
-    hasil.innerHTML = "gagal mengirim 😢";
+    hasil.innerHTML = "Gagal mengirim 😢";
     console.error(error);
   });
 }
@@ -185,14 +185,18 @@ function render(page){
     <p>terima kasih sudah pernah hadir dalam hidupku. terima kasih sudah pernah percaya dan tulus. dan sekali lagi, maaf atas semua luka yang aku sebabkan, baik yang disengaja maupun tidak. semoga kamu selalu baik-baik saja ya, and i hope youre being happiness all of time.</p>
     <p>-akbar arah k'riedho</P>
     <p class="signature">I loved you, maybe in another life.</p>
+    <button class="btn" onclick="goStepThree()">lanjut</button>
     <button class="btn" onclick="history.back()">kembali</button>
-     
-  <h3>Tulis Pesan Untukku 💌</h3>
+    `;
+  }
+
+  if(page === "step3"){ // HALAMAN 4 KHUSUS PESAN
+    content.innerHTML = `
+    <h1>kotak pesan rahasia 💌</h1>
+    <p>tulis pesanmu di bawah ini, nanti aku yang terima langsung:</p>
     <textarea id="pesanInput" placeholder="Tulis sesuatu di sini..." rows="4"></textarea>
     <button class="btn" onclick="kirimPesan()">Kirim</button>
     <p id="hasilPesan" style="margin-top:15px; font-style:italic;"></p>
-
-    <p class="signature">I loved you, maybe in another life.</p>
     <button class="btn" onclick="history.back()">kembali</button>
     `;
   }
@@ -209,6 +213,11 @@ function goStepTwo(){
   render("step2");
 }
 
+function goStepThree(){
+  history.pushState({page:"step3"}, "", "#step3");
+  render("step3");
+}
+
 window.onpopstate = function(e){
   if(e.state){
     render(e.state.page);
@@ -223,4 +232,5 @@ render("home");
 
 </body>
 </html>
+
 
