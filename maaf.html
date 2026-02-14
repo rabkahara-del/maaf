@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(#0b0b0b,#151515);color:#e6e6e6;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden;}
+body::before{content:"";position:fixed;inset:0;background-image: linear-gradient(transparent 95%, rgba(255,255,255,.12) 96%);background-size:2px 14px;opacity:.12;pointer-events:none;animation:rain .9s linear infinite;}
+@keyframes rain{from{background-position-y:0} to{background-position-y:14px;}}
+.container{position:relative;z-index:2;width:90%;max-width:700px;background:rgba(20,20,20,0.75);border-radius:18px;padding:20px;box-shadow:0 0 30px rgba(0,0,0,.6);max-height:80vh;overflow-y:auto;}
+.container::-webkit-scrollbar{width:6px;}
+.container::-webkit-scrollbar-thumb{background:rgba(255,255,255,.35);border-radius:10px;}
+h1{text-align:center;font-weight:500;margin-bottom:20px;font-size:26px;}
+p{line-height:1.75;font-size:15px;margin-bottom:16px;opacity:.95;}
+.btn{display:block;margin:20px auto 0;padding:12px 26px;background:none;border:1px solid #888;color:#eee;border-radius:30px;font-size:14px;cursor:pointer;transition:all .3s ease;}
+.btn:hover{background:#e6e6e6;color:#111;}
+.signature{margin-top:30px;font-style:italic;opacity:.8;text-align:right;}
+.fade{animation:fadeIn 1.2s ease forwards;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<audio id="bgm" loop>
+  <source src="lagu.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container fade" id="content">
+  <h1>hai.</h1>
+  <p>kalau kamu baca ini, ini cara paling jujur yang bisa aku lakuin sekarang, tanpa balasan, tanpa drama, cuma buat minta maaf.</p>
+  <button class="btn" onclick="stepOne()">klik pelan aja</button>
+</div>
+
+<script>
+const bgm=document.getElementById("bgm");
+
+function stepOne(){
+    bgm.volume=0.4;
+    bgm.play().catch(e=>console.log("Klik tombol dulu biar audio jalan"));
+
+    document.getElementById("content").innerHTML=`
+    <h1>aku minta maaf.</h1>
+    <p>maaf karena selama ini aku lebih sering merasa benar tapi jarang benar-benar paham.</p>
+    <p>aku sadar sikapku, cara bicara, dan caraku bersikap sering bikin kamu capek bahkan mungkin sakit.</p>
+    <p>aku belum sempet bilang maaf sebelum kamu ngeblok semua jalanku buat bilang "aku nyesel".</p>
+    <p>aku bikin kamu ragu, ngerasa nggak aman, dan harus kuat sendiri.</p>
+    <p>pesan ini bukan buat balikan tapi buat aku jujur dan bebanku sedikit berkurang.</p>
+    <button class="btn" onclick="stepTwo()">lanjut</button>
+    `;
+}
+
+function stepTwo(){
+    document.getElementById("content").innerHTML=`
+    <h1>dengerin aku sebentar.</h1>
+    <p>aku bikin ini bukan buat narik kamu balik, bukan buat minta kesempatan kedua.</p>
+    <p>kalau pun suatu hari kamu berpikir balik, aku sadar diri… itu cuma bikin kamu sakit lagi.</p>
+    <p>aku nyakitin kamu, bukan sekali, bukan dua kali, tapi entah berapa kali sampai aku sendiri malu ngitungnya.</p>
+    <p>aku belajar satu hal: mencintai gak cukup cuma niat, tapi perlu ngerti, denger, nahan ego. dan aku gagal.</p>
+    <p>kalau kamu nggak bisa maafin aku, aku nerima. aku cuma pengen bebanku sedikit berkurang karena akhirnya aku berani bilang: aku salah.</p>
+    <p>aku harap kamu sehat, bahagia, dan hidupmu lebih tenang dari hari-hari saat aku belum cukup dewasa buatmu.</p>
+    <p class="signature">I loved you, maybe in another life.</p>
+    `;
+}
+</script>
+</body>
+</html>
