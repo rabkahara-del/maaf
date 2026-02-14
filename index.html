@@ -86,6 +86,14 @@ p{
   from{opacity:0;transform:translateY(10px);}
   to{opacity:1;transform:translateY(0);}
 }
+textarea{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  resize:none;
+  margin-top:10px;
+}
 </style>
 </head>
 
@@ -113,7 +121,7 @@ function render(page){
   }
 
   if(page === "step1"){
-    bgm.volume = 0.4;
+    bgm.volume = 0.15;
     bgm.play().catch(()=>{});
 
     content.innerHTML = `
@@ -146,9 +154,17 @@ function render(page){
     <p>-akbar arah k'riedho</P>
     <p class="signature">I loved you, maybe in another life.</p>
     <button class="btn" onclick="history.back()">kembali</button>
+   <h3>Tulis Pesan Untukku 💌</h3>
+    <textarea id="pesanInput" placeholder="Tulis sesuatu di sini..." rows="4"></textarea>
+    <button class="btn" onclick="kirimPesan()">Kirim</button>
+    <p id="hasilPesan" style="margin-top:15px; font-style:italic;"></p>
+
+    <p class="signature">I loved you, maybe in another life.</p>
+    <button class="btn" onclick="history.back()">kembali</button>
     `;
   }
 }
+
 
 function goStepOne(){
   history.pushState({page:"step1"}, "", "#step1");
@@ -170,8 +186,37 @@ window.onpopstate = function(e){
 
 history.replaceState({page:"home"}, "", "#home");
 render("home");
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+(function(){
+  emailjs.init("XHia2CkgRsrbmZhkn"); // PUBLIC KEY
+})();
+
+function kirimPesan() {
+  const pesan = document.getElementById("pesanInput").value;
+  const hasil = document.getElementById("hasilPesan");
+
+  if(pesan.trim() === ""){
+    hasil.innerHTML = "Jangan dikosongin dong 😅";
+    return;
+  }
+
+  emailjs.send("service_88xkoyw","template_i8nr33c",{
+    message: pesan
+  })
+  .then(function() {
+    hasil.innerHTML = "Pesan berhasil dikirim 💌";
+    document.getElementById("pesanInput").value="";
+  }, function(error) {
+    hasil.innerHTML = "Gagal mengirim 😢";
+    console.error(error);
+  });
+}
+</script>
+
+</script>
 </script>
 
 </body>
 </html>
-
