@@ -114,25 +114,39 @@ textarea{
   emailjs.init("XHia2CkgRsrbmZhkn"); // PUBLIC KEY
 })();
 
-function kirimPesan() {
+function kirimPesanGhibli() {
   const pesan = document.getElementById("pesanInput").value;
   const hasil = document.getElementById("hasilPesan");
+  const btn = document.getElementById("kirimBtn");
 
   if(pesan.trim() === ""){
     hasil.innerHTML = "Jangan dikosongin dong 😅";
     return;
   }
 
-  emailjs.send("service_88xkoyw","template_i8nr33c",{
-    message: pesan
-  })
-  .then(function() {
-    hasil.innerHTML = "Pesan berhasil dikirim 💌";
-    document.getElementById("pesanInput").value="";
-  }, function(error) {
-    hasil.innerHTML = "Gagal mengirim 😢";
-    console.error(error);
-  });
+  btn.innerHTML = "Mengirim...";
+  btn.disabled = true;
+
+  emailjs.send("service_88xkoyw","template_i8nr33c",{ message: pesan })
+    .then(function() {
+      hasil.innerHTML = "";
+      let i = 0;
+      const text = "💌 pesan berhasil dikirim!";
+      const typing = setInterval(() => {
+        hasil.innerHTML += text.charAt(i);
+        i++;
+        if(i >= text.length) clearInterval(typing);
+      }, 50);
+
+      btn.innerHTML = "💌 terkirim!";
+      btn.style.background = "#fceabb";
+      btn.style.color = "#111";
+    }, function(error) {
+      hasil.innerHTML = "gagal mengirim 😢";
+      btn.innerHTML = "Kirim";
+      btn.disabled = false;
+      console.error(error);
+    });
 }
 </script>
 
@@ -140,9 +154,7 @@ function kirimPesan() {
 const content = document.getElementById("content");
 const bgm = document.getElementById("bgm");
 
-// Render halaman
 function render(page){
-
   if(page === "home"){
     content.innerHTML = `
   <h1>hai.</h1>
@@ -186,51 +198,32 @@ function render(page){
     <p>-akbar arah k'riedho</P>
     <p class="signature">I loved you, maybe in another life.</p>
     <button class="btn" onclick="goStepThree()">lanjut</button>
-    <button class="btn" onclick="history.back()">kembali</button>
+      <button class="btn" onclick="history.back()">kembali</button>
     `;
   }
 
-  if(page === "step3"){ // HALAMAN 4 KHUSUS PESAN
+  if(page === "step3"){
     content.innerHTML = `
-    <h1>kotak pesan rahasia 💌</h1>
-    <p>tulis pesanmu di bawah ini, nanti aku yang terima langsung:</p>
-    <textarea id="pesanInput" placeholder="Tulis sesuatu di sini..." rows="4"></textarea>
-    <button class="btn" onclick="kirimPesan()">Kirim</button>
-    <p id="hasilPesan" style="margin-top:15px; font-style:italic;"></p>
-    <button class="btn" onclick="history.back()">kembali</button>
+      <h1>kotak pesan rahasia 💌</h1>
+      <p>tulis pesanmu di bawah ini, nanti aku yang terima langsung:</p>
+      <textarea id="pesanInput" placeholder="Tulis sesuatu di sini..." rows="4"></textarea>
+      <br><br>
+      <button id="kirimBtn" class="btn" onclick="kirimPesanGhibli()">Kirim</button>
+      <p id="hasilPesan" style="margin-top:15px; font-style:italic;"></p>
+      <button class="btn" onclick="history.back()">kembali</button>
     `;
   }
 }
 
 // Navigasi
-function goStepOne(){
-  history.pushState({page:"step1"}, "", "#step1");
-  render("step1");
-}
+function goStepOne(){ history.pushState({page:"step1"},"","#step1"); render("step1"); }
+function goStepTwo(){ history.pushState({page:"step2"},"","#step2"); render("step2"); }
+function goStepThree(){ history.pushState({page:"step3"},"","#step3"); render("step3"); }
 
-function goStepTwo(){
-  history.pushState({page:"step2"}, "", "#step2");
-  render("step2");
-}
-
-function goStepThree(){
-  history.pushState({page:"step3"}, "", "#step3");
-  render("step3");
-}
-
-window.onpopstate = function(e){
-  if(e.state){
-    render(e.state.page);
-  } else {
-    render("home");
-  }
-};
-
-history.replaceState({page:"home"}, "", "#home");
+window.onpopstate = function(e){ if(e.state){ render(e.state.page); } else { render("home"); } };
+history.replaceState({page:"home"},"","#home");
 render("home");
 </script>
 
 </body>
 </html>
-
-
