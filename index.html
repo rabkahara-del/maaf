@@ -17,28 +17,19 @@ body{
   justify-content:center;
   align-items:center;
   min-height:100vh;
-  overflow:hidden;
 }
 .container{
   width:90%;
   max-width:700px;
-  background:rgba(20,20,20,0.8);
+  background:rgba(20,20,20,0.85);
   border-radius:18px;
   padding:20px;
   box-shadow:0 0 30px rgba(0,0,0,.6);
   max-height:80vh;
   overflow-y:auto;
 }
-h1{
-  text-align:center;
-  margin-bottom:20px;
-  font-weight:500;
-}
-p{
-  line-height:1.7;
-  margin-bottom:15px;
-  font-size:15px;
-}
+h1{text-align:center;margin-bottom:20px;font-weight:500;}
+p{line-height:1.7;margin-bottom:15px;font-size:15px;}
 .btn{
   display:block;
   margin:15px auto 0;
@@ -50,16 +41,7 @@ p{
   cursor:pointer;
   transition:.3s;
 }
-.btn:hover{
-  background:#eee;
-  color:#111;
-}
-.signature{
-  margin-top:20px;
-  text-align:right;
-  font-style:italic;
-  opacity:.8;
-}
+.btn:hover{background:#eee;color:#111;}
 textarea{
   width:100%;
   padding:10px;
@@ -67,85 +49,152 @@ textarea{
   border:1px solid #ccc;
   resize:none;
 }
+.signature{
+  margin-top:20px;
+  text-align:right;
+  font-style:italic;
+  opacity:.8;
+}
 </style>
 </head>
 
 <body>
 
 <audio id="bgm" loop></audio>
-
 <div class="container" id="content"></div>
 
+<!-- EMAILJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
+(function(){
+  emailjs.init("XHia2CkgRsrbmZhkn");
+})();
+
 const content = document.getElementById("content");
 const bgm = document.getElementById("bgm");
 let currentTrack = "";
+
+/* ===== AUDIO CONTROL ===== */
 
 function playMusic(src){
   if(currentTrack !== src){
     bgm.pause();
     bgm.src = src;
     bgm.load();
-    bgm.volume = 0.4;
+
+    // volume beda tiap lagu
+    if(src === "lagu1.mp3"){
+      bgm.volume = 0.9; // lagu pertama lebih keras
+    } else {
+      bgm.volume = 0.6; // lagu kedua normal
+    }
+
     bgm.play().catch(()=>{});
     currentTrack = src;
   }
 }
 
+function stopMusic(){
+  bgm.pause();
+  bgm.currentTime = 0;
+  currentTrack = "";
+}
+
+/* ===== KIRIM PESAN ===== */
+
+function kirimPesan(){
+  const pesan = document.getElementById("pesanInput").value;
+  const hasil = document.getElementById("hasilPesan");
+  const btn = document.getElementById("kirimBtn");
+
+  if(pesan.trim()===""){
+    hasil.innerHTML="jangan kosong ya.";
+    return;
+  }
+
+  btn.innerHTML="mengirim...";
+  btn.disabled=true;
+
+  emailjs.send("service_88xkoyw","template_i8nr33c",{ message: pesan })
+  .then(()=>{
+    hasil.innerHTML="pesan berhasil dikirim.";
+    btn.innerHTML="terkirim";
+  },()=>{
+    hasil.innerHTML="gagal mengirim.";
+    btn.innerHTML="kirim";
+    btn.disabled=false;
+  });
+}
+
+/* ===== RENDER PAGE ===== */
+
 function render(page){
 
-  if(page === "home"){
-    content.innerHTML = `
+  if(page==="home"){
+    stopMusic();
+    content.innerHTML=`
       <h1>hai.</h1>
-      <p>aku buat ini hanya untuk menyampaikan sesuatu yang belum sempat aku ucapkan dengan benar.</p>
+      <p>aku buat ini untuk menyampaikan sesuatu yang belum sempat aku ucapkan dengan benar.</p>
       <button class="btn" onclick="goStepOne()">klik disini</button>
     `;
   }
 
-  if(page === "step1"){
+  if(page==="step1"){
     playMusic("lagu1.mp3");
-
-    content.innerHTML = `
+    content.innerHTML=`
       <h1>aku minta maaf.</h1>
-      <p>aku sadar ada banyak hal yang dulu tidak aku sampaikan dengan cara yang baik.</p>
-      <p>aku mungkin menyakitimu tanpa benar-benar memahami dampaknya.</p>
-      <p>dan untuk itu, aku benar-benar minta maaf.</p>
+      <p>hai.. gimana kabarnya?, semoga kamu selalu sehat ya.. maaf kalo tiba-tiba aku datang lagi.. maaf jika aku mengganggu, aku hanya ingin meminta waktumu sebentar untuk membaca pesan maaf ku ini, aku harap dengan pesan ini maaf ku dapat tersampaikan kepadamu ya. karena di contact terakhir kita, aku belum sempet meminta maaf dengan benar kepadamu.</p>
+      <p>mungkin sebelum baca pesan ini kamu pasti menerima email dari aku, maaf jika tidak sopan dan secara sembarangan mengirim email pribadi kepadamu, karena aku bener-bener ga punya akses lain lagi selain ke email kamu. after you blocked me on all my sosmed, aku hanya kepikiran aku pernah email kamu waktu itu dan akhirnya aku tergerak untuk menulis pesan ini, dikarenakan rasa bersalah yg selalu berputar dikepalaku setiap harinya.</p>
+      <p>pertama, aku benar-benar minta maaf ya.. maaf dari lubuk hatiku yg paling dalam, maaf aku bener-bener sangat menghancurkanmu. bukan cuma soal kebohongan yang dulu pernah aku lakukan, tapi juga soal caraku menyampaikan semuanya di akhir. mungkin bahasa ku saat itu terkesan kasar, kaku, kurang enak untuk dibaca dan sangat membekas dihatimu.. i feel so bad for this. tapi tidak bisa dipungkiri kalau memang begitu kejadiannya.</p>
+      <p>aku tahu, kenyataan yang aku ungkap mungkin terasa seperti pukulan kedua untukmu setelah luka yang lama. dan aku paham kalau itu membuatmu marah, kecewa, bahkan merasa tidak dihargai.</p>
+      <p>alasan mendasar kenapa aku berani jujur, pasti kamu bingung kan? karena sejauh sebelum kejadian ungkapan "jujurku" ke kamu. kenapa aku jujur? kenapa aku ungkapin masalah itu ke kamu? padahal hubungan kita baik-baik aja terlepas kita juga udh gada hubungan, but ini lebih ke konteks hubungan sbg manusia. kita mulai menerima 1 sama lain even tanpa status dan kita bisa berhubungan baik, dengan harapan mungkin bisa satu kembali. jadi kenapa aku seolah memperkeruh hubungan ini seakan aku ingin pergi beneran, seakan aku udah bener-bener ga nganggep kamu.. itu mungkin yg jadi pertanyaan km ke aku. jujurly aku tidak ingin kamu terus berharap pada seseorang yang bahkan belum jelas arah hidupnya. ini bukan hanya alasan belaka, tp ini benar-benar pure kenyataan yg aku alami sekarang, km mungkin juga tau kurang lebihnya hidupku seperti apa krn kita masih sering berkabar kala itu. huftt.. hampir 3 thn setelah lulus aku ngerasa gada improve nya samsek, gagal.. kek udah makanan setiap tahun kurasa.. sedih? iya bgt.. ketika tmn" udh mulai menemukan jalan mereka, sedangkan aku masih meraba-raba jalan mana yg harus aku pilih. aku ngerasa burnouts atas kehidupan ku sendiri.. lelah fisik, mental, psikis bener-bener sampai dititik yg aku gatau harus kemana, bahkan rumah yg aku anggap rumah sering kali tidak terasa menghangatkan. dan ketika aku merenungi itu semua, tiba-tiba terlintas dikepalaku kalo mungkin sebagian rasa beban hidup ini disebabkan atas kesalahan ku ke kamu. kesalahan yg membuat kamu sedih, tertekan, kecewa selama berhubungan dengan ku. karena adanya tekanan hidup, rasa bersalah yg tak berujung hingga akhirnya aku merasa aku harus jujur ke kamu atas semua yg aku sembunyikan dari kamu, mungkin itu bisa sedikit meringankan jalan hidupku.. dengan aku jujur ke kamu.  dengan segala jenis konsekuensinya aku memberanikan diri untuk mengatakan itu ke kamu, setidaknya aku bisa lega dengan kejujuranku. yah apapun itu lebih baik jujur drpd baik-baik tp banyak yg di sembunyikan dibelakang. sikapmu yg selaluuu baikk ke aku pun juga, menjadi alasan aku tidak bisa menerima baikmu atas kebohonganku. hingga pada akhirnya aku menulis semua yg aku tulis ke kamu waktu itu, dengan perasaan yg sedih kesal marah.. aku menulisnya secara kasar tanpa mengolah kata-kataku terlebih dahulu dan itu salahku.. dari semua itu aku minta maaf ya.</p>
+      <p>intinya aku merasa hidupku belum stabil, belum punya pencapaian yang bisa dibanggakan, dan aku takut kamu menggantungkan harapan pada laki-laki yang masih berantakan ini, ditambah dengan all my lies to you, maaf ya. pada dasarnya aku memang lemah ci, aku dibesarkan dengan kurangnya peran sosok ayah yg care kepada anak-anaknya, padahal kita sebagai manusia butuh peran seperti itu, dan apa yang km katakan kalo aku “not gantle man”, it’s true, kamu gasalah kalo ngomong gitu.. aku memang lemah, pecundang, not gantle man, semua yg km katakan ke aku bener semua ci.  aku juga merasa gada impact positif apapun ke kamu aku hanya bisa membuat km kecewa terus menerus. dan karena itu you derseve better. aku ga sanggup liat km terus-terus an berharap kepada pria bermalah ini.. aku ingin km lebih lepas lebih menikmati hidupmu, lebih mengerti orang-orang disekitar mu, tanpa harus terkekang oleh ku. aku tidak mau membawamu kemasalah ku lebih dalam cukup aku aja yg merasakan ini, cukup dengan kebohonganku saja aku menyakitimu tidak lebih.</p>
+      <p>tapi sekarang aku sadar, niat untuk “melepas dengan jujur” tetap tidak menghapus rasa sakit yang kamu rasakan.</p>
+      <p>aku juga ingin mengakui sesuatu yang baru aku pahami belakangan ini. sebagian dari perasaanku setelah semuanya selesai bukan hanya tentang kehilangan kamu, tapi tentang kehilangan rasa diterima. itulah pengalaman yg mungkin membuatku sedih dan sangat kecewa kepada diriku sendiri. disaat kamu adalah orang yang menerima aku apa adanya, bahkan disaat aku merasa biasa saja secara fisik dan belum jadi siapa-siapa. kamu selalu excited, selalu menerima, selalu mendukung, selalu membuat aku berfikir bahwa mimpiku itu bukan hanya sekedar angan-angan, yg secara tidak langsung kamu percaya kalau aku akan berhasil. tidak bisa dipungkiri kalo kamu selalu buat aku tenang dan sebenernya aku membutuhkan itu, tp dengan semua kesalahanku ke kamu.. ditambah dengan bagaimana reaksi km setelah aku jujur ke kamu, aku rasa aku gapantes dapetin itu lagi, biarlah aku hancur sendiri tanpa membawamu.</p>
+      <p>vici.. mungkin kamu adalah pengalaman pertamaku yg memiliki ruang ter-sendiri di hatiku yg paling dalam, kamu akan menjadi pengalaman pertama yg ABADI sama seperti makna lagu "abadi" juga. bahwa aku mungkin memiliki masalalu yg cukup baik setelah bertemu dengan kamu, aku merasa dihargai, dicintai, diapresiasi, diperhatikan, yg sebelumnya belum pernah aku dapatkan. masalalu dengan mu terlihat sangat indah dan menenangkan, tetapi sebagai manusia kita tidak bisa hidup hanya di masalalu.. krn hidup akan terus berjalan. lagu ABADI kurang lebihnya tentang mengikhlaskan, mengikhlaskan masalalu yg akan selalu abadi, kita ga bisa selalu tinggal dimasa lalu, karena masalalu adalah pelajaran yg bikin kita seperti saat ini, detik ini, dan masa depan yg membuat kita selalu belajar.</p>
+      <p>aku tidak menyesal mengenalmu, mencintaimu, bahagia dan sedih bersamamu, bahkan aku tidak bisa membencimu. dan terimakasi apabila kamu juga sebaliknya begitu kepadaku. mungkin butuh waktu untuk aku move on darimu, karena disetiap malam aku selalu terbayang semua tentangmu, tp yg paling sering sih adalah kesalahanku. semoga dengan tulisan ini kamu bisa memaafkanku ya dan kita masing-masing bisa melanjutkan hidup dengan tenang.</p>
       <button class="btn" onclick="goStepTwo()">lanjut</button>
       <button class="btn" onclick="history.back()">kembali</button>
     `;
   }
 
-  if(page === "step2"){
+  if(page==="step2"){
     playMusic("lagu2.mp3");
-
-    content.innerHTML = `
-      <h1>penjelasan.</h1>
-      <p>kejujuranku waktu itu mungkin terasa seperti luka kedua.</p>
-      <p>niatku bukan untuk menghancurkan, tapi caraku salah.</p>
-      <p>aku tidak menulis ini untuk meminta kesempatan lagi, hanya untuk menutup semuanya dengan dewasa.</p>
+    content.innerHTML=`
+      <h1>last message.</h1>
+      <p>jujur last chat dr kamu bener-bener membuat aku sadar sepenuhnya akan salahku yg sefatal dan sehancur itu, aku bener-bener gatau malu, gatau diuntung, dan tidak bersyukur atas segala hal tentangmu. terimakasi karena sudah menuliskan chat se-emosional itu kepadaku, itu yg aku butuhkan krn aku perlu disadarkan. jujur itu chat pertama kamu yg aku rasa seperti menamparku, dan membekas dibenakku.. but, its okey aku juga nglakuin itu ke kamu kan? tapi aku yg lebih parah. sekarang aku lega kamu bener-bener tau akan kebohoganku terlepas km akhirnya membenciku, ini fakta bahwa aku ga sebaik itu dan aku "ga pantes untuk diberi ketulusanmu" mungkin ini bisa jd pelajaran untuk kamu kedepannya berhati-hati dalam berhubungan ya. aku akan instrospeksi diriku ini, semoga aku bisa jadi lebih baik suatu hari nanti.</p>
+      <p>aku tidak menulis ini untuk meminta kesempatan kedua. aku hanya tidak ingin pergi dari hidupmu tanpa benar-benar meminta maaf dengan sepenuh hati. mungkin ini waktu yg tepat, aku gatau kamu sering buka email atau tidak, mungkin jika tidak.. pesan ini akan hilang begitu saja tanpa aku benar-benar bisa meminta maaf kepadamu tapi harapanku kamu pasti akan membuka email ini.</p>
+      <p>dan jika aku boleh berpesan untukmu, jangan pernah tinggalin sholat ya.. km boleh tinggalin aku tapi tidak untuk tuhan, jaga pola makan nya walaupun jauh dari ortu karena kuliahmu.. aku harap kamu selalu makan-makanan yg sehat dan bukan junkfood, carilah teman yg selalu ada untuk kamu yg buat kamu selalu bahagia, dan aku doakan untuk segala sesuatu yg sekarang dan nanti kamu hadapi dan usahakan, aku berdoa semoga Allah melancarkan segalanya untukmu AAMIIN.</p>
+      <p>“melepaskanmu adalah caraku mencintaimu yang paling jujur. aku berhenti memaksamu tinggal, bukan karena rasaku hilang, tapi karena aku sadar bahagiamu ternyata nggak lagi di sampingku. aku memulangkanmu pada dirimu sendiri, pada mimpi-mimpimu yg mungkin sempat terhambat karena kehadiranku. loving you means letting you grow, even if it’s not with me. ini adalah baktiku yg terakhir untuk senyummu. aku sadar, memaksamu menetap hanya akan membuat kita saling melukai. aku nggak mau kamu merasa terpenjara dalam kasih sayangku. jadi, pergilah temukan langit yg lebih luas, yg bisa buat kamu terbang lebih tinggi. namamu nggak akan hilang dari doaku, cuma tujuannya yang berubah. sekarang, aku cuma minta supaya semesta jagain kamu sebaik aku dulu mencoba menjagamu. i’ll love you from a safe distance, tempat dimana kehadiranku nggak membebanimu. aku akan belajar pelan-pelan buat nggak lagi nyari kabarmu. ini caraku menghargai ruang barumu. aku ingin kamu bebas melangkah tanpa harus merasa ditarik balik oleh rasa harapmu kepadaku. terimakasih sudah pernah singgah dan jadi bagian paling indah dihidupku. kita nggak gagal, kita cuma sudah sampai di garis finish yg berbeda. no regrets, only gratitude. aku bersyukur pernah punya kesempatan buat sayang sama kamu. ini adalah pelukan terakhirku lewat doa. aku lepaskan genggamanku supaya tanganmu bisa menggenggam kebahagian yg baru. pergilah dengan tenang, aku pun akan belajar baik-baik saja. goodbye, my most beautiful lesson.”</p>
+      <p>sekali lagi aku minta maaf banget… semoga kamu selalu dalam lindungan Allah ya, and i hope you're always happy :)</p>
+      <p>-akbar arah k'riedho</p>
       <button class="btn" onclick="goStepThree()">lanjut</button>
       <button class="btn" onclick="history.back()">kembali</button>
+      <p class="signature">i loved you, maybe in another life</p>
     `;
   }
 
-  if(page === "step3"){
-    content.innerHTML = `
+  if(page==="step3"){
+    content.innerHTML=`
       <h1>pesan untukku.</h1>
-      <p>jika kamu ingin menyampaikan sesuatu, tulis saja di bawah ini.</p>
-      <textarea placeholder="tulis sesuatu di sini..." rows="4"></textarea>
+      <p>jika kamu ingin menyampaikan sesuatu, tulis di bawah ini.</p>
+      <textarea id="pesanInput" rows="4" placeholder="tulis sesuatu di sini..."></textarea>
+      <button id="kirimBtn" class="btn" onclick="kirimPesan()">kirim</button>
+      <p id="hasilPesan" style="margin-top:10px;font-style:italic;"></p>
       <button class="btn" onclick="history.back()">kembali</button>
-      <p class="signature">- akbar</p>
     `;
   }
 }
 
-function goStepOne(){ history.pushState({page:"step1"},"","#step1"); render("step1"); }
-function goStepTwo(){ history.pushState({page:"step2"},"","#step2"); render("step2"); }
-function goStepThree(){ history.pushState({page:"step3"},"","#step3"); render("step3"); }
+/* ===== NAVIGATION ===== */
 
-window.onpopstate = function(e){
-  if(e.state){ render(e.state.page); }
-  else { render("home"); }
+function goStepOne(){history.pushState({page:"step1"},"","#step1");render("step1");}
+function goStepTwo(){history.pushState({page:"step2"},"","#step2");render("step2");}
+function goStepThree(){history.pushState({page:"step3"},"","#step3");render("step3");}
+
+window.onpopstate=function(e){
+  if(e.state){render(e.state.page);}
+  else{render("home");}
 };
 
 history.replaceState({page:"home"},"","#home");
