@@ -17,43 +17,87 @@ body{
   justify-content:center;
   align-items:center;
   min-height:100vh;
+  overflow:hidden;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image: linear-gradient(transparent 95%, rgba(255,255,255,.12) 96%);
+  background-size:2px 14px;
+  opacity:.12;
+  pointer-events:none;
+  animation:rain .9s linear infinite;
+}
+@keyframes rain{
+  from{background-position-y:0}
+  to{background-position-y:14px;}
 }
 .container{
+  position:relative;
+  z-index:2;
   width:90%;
   max-width:700px;
-  background:rgba(20,20,20,0.85);
+  background:rgba(20,20,20,0.75);
   border-radius:18px;
-  padding:20px;
+  padding:24px;
   box-shadow:0 0 30px rgba(0,0,0,.6);
   max-height:80vh;
   overflow-y:auto;
 }
-h1{text-align:center;margin-bottom:20px;font-weight:500;}
-p{line-height:1.7;margin-bottom:15px;font-size:15px;}
+h1{
+  text-align:center;
+  font-weight:500;
+  margin-bottom:22px;
+  font-size:26px;
+}
+
+/* BAGIAN YANG DIREVISI BIAR TEKS RAPI */
+p{
+  line-height:1.85;
+  font-size:15px;
+  margin-bottom:18px;
+  opacity:.95;
+  text-align:justify;     /* rata kiri kanan */
+  text-indent:28px;       /* paragraf masuk sedikit */
+}
+
 .btn{
   display:block;
-  margin:15px auto 0;
-  padding:10px 24px;
-  border-radius:30px;
-  border:1px solid #aaa;
+  margin:22px auto 0;
+  padding:12px 26px;
   background:none;
+  border:1px solid #888;
   color:#eee;
+  border-radius:30px;
+  font-size:14px;
   cursor:pointer;
   transition:.3s;
 }
-.btn:hover{background:#eee;color:#111;}
+.btn:hover{
+  background:#e6e6e6;
+  color:#111;
+}
+.signature{
+  margin-top:30px;
+  font-style:italic;
+  opacity:.8;
+  text-align:right;
+}
+.fade{
+  animation:fadeIn 1.2s ease forwards;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
 textarea{
   width:100%;
   padding:10px;
   border-radius:8px;
   border:1px solid #ccc;
   resize:none;
-}
-.signature{
-  margin-top:20px;
-  text-align:right;
-  font-style:italic;
-  opacity:.8;
+  margin-top:10px;
 }
 </style>
 </head>
